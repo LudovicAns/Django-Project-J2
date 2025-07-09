@@ -1,66 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedbacks for {{ job }}</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .feedback {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-        .rating {
-            font-weight: bold;
-        }
-        .filter-form {
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-        }
-    </style>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Feedbacks for {{ job }}</h1>
-    
-    <div class="filter-form">
-        <h3>Filter Feedbacks</h3>
-        <form method="get">
-            <label for="min_rating">Minimum Rating:</label>
-            <select name="min_rating" id="min_rating">
-                <option value="">All Ratings</option>
-                <option value="1">1+</option>
-                <option value="2">2+</option>
-                <option value="3">3+</option>
-                <option value="4">4+</option>
-                <option value="5">5</option>
-            </select>
-            <button type="submit">Filter</button>
-        </form>
-    </div>
-    
-    {% if feedbacks %}
-        <div class="feedbacks">
-            {% for feedback in feedbacks %}
-                <div class="feedback">
-                    <p class="rating">Rating: {{ feedback.rating }}/5</p>
-                    <p>By: {{ feedback.author_name }}</p>
-                    <p>{{ feedback.comment }}</p>
-                    <p><small>Posted on: {{ feedback.created_at }}</small></p>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-3xl font-bold mb-6 text-center">Feedbacks for {{ job }}</h1>
+
+        <div class="bg-gray-200 p-4 rounded-lg mb-6">
+            <h3 class="text-lg font-semibold mb-2">Filter Feedbacks</h3>
+            <form method="get" class="flex flex-wrap items-end gap-2">
+                <div class="w-full md:w-auto">
+                    <label for="min_rating" class="block text-sm font-medium text-gray-700 mb-1">Minimum Rating:</label>
+                    <select name="min_rating" id="min_rating" class="w-full md:w-auto rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+                        <option value="">All Ratings</option>
+                        <option value="1">1+</option>
+                        <option value="2">2+</option>
+                        <option value="3">3+</option>
+                        <option value="4">4+</option>
+                        <option value="5">5</option>
+                    </select>
                 </div>
-            {% endfor %}
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Filter</button>
+            </form>
         </div>
-    {% else %}
-        <p>No feedbacks found for this job{% if min_rating %} with rating {{ min_rating }}+{% endif %}.</p>
-    {% endif %}
-    
-    <p>
-        <a href="{% url 'add_feedback' %}">Add a Feedback</a> | 
-        <a href="{% url 'job_average_rating' job.id %}">View Average Rating</a>
-    </p>
+
+        {% if feedbacks %}
+            <div class="space-y-4">
+                {% for feedback in feedbacks %}
+                    <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                        <p class="font-bold text-lg">Rating: {{ feedback.rating }}/5</p>
+                        <p class="text-gray-700">By: {{ feedback.author_name }}</p>
+                        <p class="my-2">{{ feedback.comment }}</p>
+                        <p class="text-sm text-gray-500">Posted on: {{ feedback.created_at }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-600 italic text-center">No feedbacks found for this job{% if min_rating %} with rating {{ min_rating }}+{% endif %}.</p>
+        {% endif %}
+
+        <div class="mt-8 text-center">
+            <a href="{% url 'add_feedback' %}" class="text-green-600 hover:text-green-800 font-medium">Add a Feedback</a> 
+            <span class="text-gray-500 mx-2">|</span> 
+            <a href="{% url 'job_average_rating' job.id %}" class="text-green-600 hover:text-green-800 font-medium">View Average Rating</a>
+        </div>
+    </div>
 </body>
 </html>

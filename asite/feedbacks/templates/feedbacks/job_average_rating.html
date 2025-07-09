@@ -2,57 +2,32 @@
 
 {% block title %}Average Rating for {{ job }}{% endblock %}
 
-{% block extra_css %}
-<style>
-    .rating-container {
-        text-align: center;
-        margin: 30px 0;
-    }
-    .average-rating {
-        font-size: 48px;
-        font-weight: bold;
-        color: #4CAF50;
-    }
-    .rating-label {
-        font-size: 18px;
-        color: #666;
-        margin-top: 10px;
-    }
-    .star {
-        color: #FFD700;
-        font-size: 36px;
-    }
-    .no-rating {
-        color: #999;
-        font-style: italic;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-    <h1>Average Rating for {{ job }}</h1>
+    <h1 class="text-2xl font-bold mb-6">Average Rating for {{ job }}</h1>
 
-    <div class="rating-container">
+    <div class="text-center my-12 py-8 bg-white rounded-lg shadow-md">
         {% if average_rating %}
-            <div class="average-rating">{{ average_rating|floatformat:1 }}</div>
-            <div class="rating-label">out of 5</div>
-            <div class="stars">
+            <div class="text-5xl font-bold text-green-600">{{ average_rating|floatformat:1 }}</div>
+            <div class="text-lg text-gray-600 mt-2">out of 5</div>
+            <div class="flex justify-center mt-4 space-x-1">
                 {% for i in "12345" %}
                     {% if forloop.counter <= average_rating|floatformat:0|add:"0" %}
-                        <span class="star">★</span>
+                        <span class="text-4xl text-yellow-400">★</span>
                     {% else %}
-                        <span class="star" style="color: #ddd;">★</span>
+                        <span class="text-4xl text-gray-300">★</span>
                     {% endif %}
                 {% endfor %}
             </div>
         {% else %}
-            <p class="no-rating">No ratings available for this job yet.</p>
+            <p class="text-gray-500 italic text-lg">No ratings available for this job yet.</p>
         {% endif %}
     </div>
 
-    <p>
-        <a href="{% url 'job_feedbacks' job.id %}">View All Feedbacks</a> | 
-        <a href="{% url 'add_feedback' %}">Add a Feedback</a> | 
-        <a href="{% url 'select_job' %}">Back to Job List</a>
-    </p>
+    <div class="flex justify-center space-x-4 mt-8">
+        <a href="{% url 'job_feedbacks' job.id %}" class="text-green-600 hover:text-green-800 font-medium">View All Feedbacks</a>
+        <span class="text-gray-500">|</span>
+        <a href="{% url 'add_feedback' %}" class="text-green-600 hover:text-green-800 font-medium">Add a Feedback</a>
+        <span class="text-gray-500">|</span>
+        <a href="{% url 'select_job' %}" class="text-green-600 hover:text-green-800 font-medium">Back to Job List</a>
+    </div>
 {% endblock %}

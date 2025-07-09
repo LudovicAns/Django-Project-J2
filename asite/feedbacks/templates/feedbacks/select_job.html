@@ -2,58 +2,28 @@
 
 {% block title %}Select a Job{% endblock %}
 
-{% block extra_css %}
-<style>
-    .job-list {
-        margin: 20px 0;
-    }
-    .job-list ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    .job-list li {
-        margin-bottom: 10px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-    }
-    .job-list li:hover {
-        background-color: #f0f0f0;
-    }
-    .job-list a {
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-        display: block;
-    }
-    .job-list a:hover {
-        color: #4CAF50;
-    }
-    .add-feedback-btn {
-        margin-top: 20px;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-    <h1>Select a Job to View Feedbacks</h1>
+    <h1 class="text-2xl font-bold mb-6">Select a Job to View Feedbacks</h1>
 
     {% if jobs %}
-        <div class="job-list">
-            <ul>
+        <div class="my-6">
+            <ul class="space-y-3">
                 {% for job in jobs %}
-                    <li>
-                        <a href="{% url 'job_feedbacks' job.id %}">{{ job }}</a>
+                    <li class="border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
+                        <a href="{% url 'job_feedbacks' job.id %}" class="block p-4 font-medium text-gray-800 hover:text-green-600">
+                            {{ job }}
+                        </a>
                     </li>
                 {% endfor %}
             </ul>
         </div>
     {% else %}
-        <p>No jobs available.</p>
+        <p class="text-gray-600 italic">No jobs available.</p>
     {% endif %}
 
-    <p class="add-feedback-btn">
-        <a href="{% url 'add_feedback' %}" class="btn">Add a Feedback</a>
-    </p>
+    <div class="mt-8">
+        <a href="{% url 'add_feedback' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+            Add a Feedback
+        </a>
+    </div>
 {% endblock %}
