@@ -1,13 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Avg
+from rest_framework import viewsets
+
 from .models import Feedback
 from .forms import FeedbackForm
-from jobs.models import JobRecord
+from ..jobs.models import JobRecord
+
+from .serializer import FeedbackSerializer
+
 
 # Create your views here.
+class FeedbackViewSet(viewsets.ModelViewSet):
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer
+
 def select_job(request):
     jobs = JobRecord.objects.all().order_by('job_title__name')
     return render(request, 'feedback/select_job.html', {'jobs': jobs})
+
 def job_feedbacks(request, job_id):
     job = get_object_or_404(JobRecord, id=job_id)
     min_rating = request.GET.get('min_rating')
