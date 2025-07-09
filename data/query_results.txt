@@ -1,0 +1,112 @@
+=== Top 5 Job Titles with Highest Salaries (USD) ===
+1. Research Team Lead: $560,000.00 USD
+2. Analytics Engineering Manager: $399,880.00 USD
+3. ML Infrastructure Engineer: $396,875.00 USD
+4. Data Science Tech Lead: $375,000.00 USD
+5. Machine Learning Performance Engineer: $345,000.00 USD
+
+=== Average Salary by Experience Level ===
+EN (Experience Level: EN): $66,574.73 USD
+EX (Experience Level: EX): $205,235.37 USD
+MI (Experience Level: MI): $103,603.26 USD
+SE (Experience Level: SE): $140,583.36 USD
+
+=== Number of Jobs by Company Location ===
+US: 640 jobs
+CA: 279 jobs
+GB: 245 jobs
+DE: 97 jobs
+AU: 83 jobs
+IN: 72 jobs
+FR: 71 jobs
+NL: 69 jobs
+ES: 57 jobs
+AT: 49 jobs
+LT: 49 jobs
+PL: 38 jobs
+SK: 38 jobs
+BR: 37 jobs
+MX: 37 jobs
+IE: 36 jobs
+LV: 33 jobs
+PT: 32 jobs
+IT: 28 jobs
+CH: 21 jobs
+FI: 21 jobs
+PH: 20 jobs
+ZA: 20 jobs
+JP: 18 jobs
+AR: 17 jobs
+NZ: 17 jobs
+CO: 16 jobs
+BE: 15 jobs
+SG: 15 jobs
+GR: 14 jobs
+EG: 12 jobs
+TR: 11 jobs
+CL: 10 jobs
+NG: 10 jobs
+CZ: 9 jobs
+UA: 9 jobs
+DK: 8 jobs
+SE: 8 jobs
+CY: 7 jobs
+EE: 7 jobs
+HU: 7 jobs
+IL: 7 jobs
+MT: 7 jobs
+RO: 7 jobs
+RU: 7 jobs
+KE: 6 jobs
+KR: 6 jobs
+LU: 6 jobs
+SI: 6 jobs
+AE: 5 jobs
+EC: 5 jobs
+LB: 5 jobs
+NO: 5 jobs
+PR: 5 jobs
+TW: 5 jobs
+AM: 4 jobs
+AS: 4 jobs
+HR: 4 jobs
+ID: 4 jobs
+MK: 4 jobs
+SV: 4 jobs
+BG: 3 jobs
+CR: 3 jobs
+DO: 3 jobs
+DZ: 3 jobs
+GH: 3 jobs
+HK: 3 jobs
+PE: 3 jobs
+PK: 3 jobs
+RS: 3 jobs
+SA: 3 jobs
+TH: 3 jobs
+BA: 2 jobs
+CD: 2 jobs
+HN: 2 jobs
+JM: 2 jobs
+MY: 2 jobs
+AD: 1 jobs
+BS: 1 jobs
+CF: 1 jobs
+CN: 1 jobs
+GI: 1 jobs
+IQ: 1 jobs
+IR: 1 jobs
+JO: 1 jobs
+LS: 1 jobs
+MD: 1 jobs
+MU: 1 jobs
+OM: 1 jobs
+PA: 1 jobs
+QA: 1 jobs
+VE: 1 jobs
+VN: 1 jobs
+XK: 1 jobs
+ZM: 1 jobs
+
+=== Remote Jobs Ratio ===
+100% Remote Jobs: 713 out of 2449 (29.11%)
