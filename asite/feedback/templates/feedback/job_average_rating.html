@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Average Rating for {{ job }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .rating-container {
+        text-align: center;
+        margin: 30px 0;
+    }
+    .average-rating {
+        font-size: 48px;
+        font-weight: bold;
+        color: #4CAF50;
+    }
+    .rating-label {
+        font-size: 18px;
+        color: #666;
+        margin-top: 10px;
+    }
+    .star {
+        color: #FFD700;
+        font-size: 36px;
+    }
+    .no-rating {
+        color: #999;
+        font-style: italic;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <h1>Average Rating for {{ job }}</h1>
+
+    <div class="rating-container">
+        {% if average_rating %}
+            <div class="average-rating">{{ average_rating|floatformat:1 }}</div>
+            <div class="rating-label">out of 5</div>
+            <div class="stars">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= average_rating|floatformat:0|add:"0" %}
+                        <span class="star">★</span>
+                    {% else %}
+                        <span class="star" style="color: #ddd;">★</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-rating">No ratings available for this job yet.</p>
+        {% endif %}
+    </div>
+
+    <p>
+        <a href="{% url 'job_feedbacks' job.id %}">View All Feedbacks</a> | 
+        <a href="{% url 'add_feedback' %}">Add a Feedback</a>
+    </p>
+{% endblock %}

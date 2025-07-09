@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Feedbacks for {{ job }}{% endblock %}
+
+{% block content %}
+    <h1>Feedbacks for {{ job }}</h1>
+    
+    <div class="filter-form">
+        <h3>Filter Feedbacks</h3>
+        <form method="get">
+            <label for="min_rating">Minimum Rating:</label>
+            <select name="min_rating" id="min_rating">
+                <option value="">All Ratings</option>
+                <option value="1">1+</option>
+                <option value="2">2+</option>
+                <option value="3">3+</option>
+                <option value="4">4+</option>
+                <option value="5">5</option>
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+    
+    {% if average_rating %}
+    <div class="average-rating-box">
+        <h3>Average Rating: {{ average_rating|floatformat:1 }}/5</h3>
+        <div class="stars">
+            {% for i in "12345" %}
+                {% if forloop.counter <= average_rating|floatformat:0|add:"0" %}
+                    <span class="star">★</span>
+                {% else %}
+                    <span class="star" style="color: #ddd;">★</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if feedbacks %}
+        <div class="feedbacks">
+            {% for feedback in feedbacks %}
+                <div class="feedback">
+                    <p class="rating">Rating: {{ feedback.rating }}/5</p>
+                    <p>By: {{ feedback.author_name }}</p>
+                    <p>{{ feedback.comment }}</p>
+                    <p><small>Posted on: {{ feedback.created_at }}</small></p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No feedbacks found for this job{% if min_rating %} with rating {{ min_rating }}+{% endif %}.</p>
+    {% endif %}
+    
+    <p>
+        <a href="{% url 'add_feedback' %}">Add a Feedback</a>
+    </p>
+{% endblock %}
