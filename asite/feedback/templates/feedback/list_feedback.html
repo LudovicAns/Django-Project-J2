@@ -4,7 +4,7 @@
 
 {% block content %}
     <h1>Feedbacks for {{ job }}</h1>
-    
+
     <div class="filter-form">
         <h3>Filter Feedbacks</h3>
         <form method="get">
@@ -20,7 +20,7 @@
             <button type="submit">Filter</button>
         </form>
     </div>
-    
+
     {% if average_rating %}
     <div class="average-rating-box">
         <h3>Average Rating: {{ average_rating|floatformat:1 }}/5</h3>
@@ -35,7 +35,7 @@
         </div>
     </div>
     {% endif %}
-    
+
     {% if feedbacks %}
         <div class="feedbacks">
             {% for feedback in feedbacks %}
@@ -50,8 +50,9 @@
     {% else %}
         <p>No feedbacks found for this job{% if min_rating %} with rating {{ min_rating }}+{% endif %}.</p>
     {% endif %}
-    
+
     <p>
-        <a href="{% url 'add_feedback' %}">Add a Feedback</a>
+        <a href="{% url 'add_feedback' %}">Add a Feedback</a> | 
+        <a href="{% url 'select_job' %}">Back to Job List</a>
     </p>
 {% endblock %}

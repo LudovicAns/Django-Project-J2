@@ -5,6 +5,9 @@ from .forms import FeedbackForm
 from jobs.models import JobRecord
 
 # Create your views here.
+def select_job(request):
+    jobs = JobRecord.objects.all().order_by('job_title__name')
+    return render(request, 'feedback/select_job.html', {'jobs': jobs})
 def job_feedbacks(request, job_id):
     job = get_object_or_404(JobRecord, id=job_id)
     min_rating = request.GET.get('min_rating')

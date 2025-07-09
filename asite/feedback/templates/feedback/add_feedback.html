@@ -4,16 +4,16 @@
 
 {% block content %}
     <h1>Add Feedback</h1>
-    
+
     <form method="post">
         {% csrf_token %}
-        
+
         {% if form.non_field_errors %}
             <div class="errorlist">
                 {{ form.non_field_errors }}
             </div>
         {% endif %}
-        
+
         <div class="form-group">
             <label for="{{ form.job.id_for_label }}">Job:</label>
             {{ form.job }}
@@ -25,7 +25,7 @@
                 </ul>
             {% endif %}
         </div>
-        
+
         <div class="form-group">
             <label for="{{ form.author_name.id_for_label }}">Your Name:</label>
             {{ form.author_name }}
@@ -37,7 +37,7 @@
                 </ul>
             {% endif %}
         </div>
-        
+
         <div class="form-group">
             <label for="{{ form.rating.id_for_label }}">Rating (1-5):</label>
             {{ form.rating }}
@@ -49,7 +49,7 @@
                 </ul>
             {% endif %}
         </div>
-        
+
         <div class="form-group">
             <label for="{{ form.comment.id_for_label }}">Comment:</label>
             {{ form.comment }}
@@ -61,11 +61,12 @@
                 </ul>
             {% endif %}
         </div>
-        
+
         <button type="submit">Submit Feedback</button>
     </form>
-    
+
     <p>
-        <a href="javascript:history.back()">Back to Feedbacks</a>
+        <a href="javascript:history.back()">Back</a> | 
+        <a href="{% url 'select_job' %}">View All Jobs</a>
     </p>
 {% endblock %}

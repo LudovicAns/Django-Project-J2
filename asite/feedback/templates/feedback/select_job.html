@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Select a Job{% endblock %}
+
+{% block extra_css %}
+<style>
+    .job-list {
+        margin: 20px 0;
+    }
+    .job-list ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    .job-list li {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    .job-list li:hover {
+        background-color: #f0f0f0;
+    }
+    .job-list a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        display: block;
+    }
+    .job-list a:hover {
+        color: #4CAF50;
+    }
+    .add-feedback-btn {
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <h1>Select a Job to View Feedbacks</h1>
+
+    {% if jobs %}
+        <div class="job-list">
+            <ul>
+                {% for job in jobs %}
+                    <li>
+                        <a href="{% url 'job_feedbacks' job.id %}">{{ job }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <p>No jobs available.</p>
+    {% endif %}
+
+    <p class="add-feedback-btn">
+        <a href="{% url 'add_feedback' %}" class="btn">Add a Feedback</a>
+    </p>
+{% endblock %}

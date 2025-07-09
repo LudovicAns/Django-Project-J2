@@ -120,22 +120,23 @@
     <header>
         <h1>Job Feedback System</h1>
     </header>
-    
+
     <nav>
         <ul>
             <li><a href="{% url 'admin:index' %}">Admin</a></li>
+            <li><a href="{% url 'select_job' %}">View Jobs</a></li>
             <li><a href="{% url 'add_feedback' %}">Add Feedback</a></li>
         </ul>
     </nav>
-    
+
     <div class="container">
         {% block content %}{% endblock %}
     </div>
-    
+
     <footer>
         <p>&copy; 2025 Job Feedback System</p>
     </footer>
-    
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>
