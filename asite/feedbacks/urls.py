@@ -3,11 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from . import views
 
-router = DefaultRouter()
-router.register('feedbacks', views.FeedbackViewSet)
-
 urlpatterns = [
-    path('', include(router.urls)),
     path('', views.select_job, name='select_job'),
     path('job/<int:job_id>/', views.job_feedbacks, name='job_feedbacks'),
     path('add/', views.add_feedback, name='add_feedback'),

@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from asite.jobs.models import JobRecord, Category, Contract, Skill, Industry, JobTitle, Location, Candidate
-from asite.jobs.serializer import JobRecordSerializer, CategorySerializer, ContractSerializer, SkillSerializer, \
+from .models import JobRecord, Category, Contract, Skill, Industry, JobTitle, Location, Candidate
+from .serializer import JobRecordSerializer, CategorySerializer, ContractSerializer, SkillSerializer, \
     IndustrySerializer, JobTitleSerializer, LocationSerializer, CandidateSerializer
 
 

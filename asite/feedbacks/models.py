@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from jobs.models import JobRecord, Candidate
 
 # Create your models here.
-class Feedback(models.Model):
+class Feedbacks(models.Model):
     job = models.ForeignKey(JobRecord, on_delete=models.CASCADE, related_name='feedbacks')
     author_name = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name='feedbacks')
     comment = models.TextField()

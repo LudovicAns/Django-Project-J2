@@ -16,10 +16,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
+from feedbacks.views import FeedbackViewSet
+from jobs.views import CategoryViewSet, ContractViewSet, SkillViewSet, IndustryViewSet, JobTitleViewSet, \
+    LocationViewSet, CandidateViewSet, JobRecordViewSet
+
+api_router = DefaultRouter()
+
+api_router.register('feedbacks', FeedbackViewSet)
+
+api_router.register('category', CategoryViewSet)
+api_router.register('contract', ContractViewSet)
+api_router.register('skill', SkillViewSet)
+api_router.register('industry', IndustryViewSet)
+api_router.register('job-title', JobTitleViewSet)
+api_router.register('location', LocationViewSet)
+api_router.register('candidate', CandidateViewSet)
+api_router.register('jobs', JobRecordViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('feedback/', include('feedback.urls')),
+    path('api/', include(api_router.urls)),
+    path('feedbacks/', include('feedbacks.urls')),
     path('jobs/', include('jobs.urls')),
 
 ]

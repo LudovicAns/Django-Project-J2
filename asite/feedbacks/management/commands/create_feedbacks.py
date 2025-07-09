@@ -4,7 +4,7 @@ from feedback.models import Feedback
 import random
 
 class Command(BaseCommand):
-    help = 'Creates sample feedback records'
+    help = 'Creates sample feedbacks records'
 
     def handle(self, *args, **options):
         # Get some job records and candidates
@@ -24,12 +24,12 @@ class Command(BaseCommand):
             "The job description didn't match the actual responsibilities.",
         ]
         
-        # Create feedback records
+        # Create feedbacks records
         feedbacks_created = 0
         for job in job_records:
             for candidate in candidates:
-                # Don't create feedback for every combination to avoid too many records
-                if random.random() < 0.7:  # 70% chance to create feedback
+                # Don't create feedbacks for every combination to avoid too many records
+                if random.random() < 0.7:  # 70% chance to create feedbacks
                     rating = random.randint(1, 5)
                     comment = random.choice(comments)
                     
@@ -41,4 +41,4 @@ class Command(BaseCommand):
                     )
                     feedbacks_created += 1
         
-        self.stdout.write(self.style.SUCCESS(f'Successfully created {feedbacks_created} feedback records'))
+        self.stdout.write(self.style.SUCCESS(f'Successfully created {feedbacks_created} feedbacks records'))

@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jobs.apps.JobsConfig',
-    'feedback.apps.FeedbackConfig',
+    'feedbacks.apps.FeedbacksConfig',
     'rest_framework',
 ]
 

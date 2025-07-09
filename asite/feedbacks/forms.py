@@ -1,9 +1,9 @@
 from django import forms
-from .models import Feedback
+from .models import Feedbacks
 
 class FeedbackForm(forms.ModelForm):
     class Meta:
-        model = Feedback
+        model = Feedbacks
         fields = ['job', 'author_name', 'comment', 'rating']
         
     def clean_rating(self):

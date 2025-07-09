@@ -10,7 +10,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ContractSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contract
-        fields = ['id', 'type_code', 'description',]
+        fields = ['type_code', 'description',]
 
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,6 +52,6 @@ class JobRecordSerializer(serializers.ModelSerializer):
             'salary', 'salary_currency', 'salary_in_usd',
             'remote_ratio', 'experience_level',
             'employment_type', 'industry', 'candidate',
-            'skills', 'created_at', 'contract_experience',
+            'skills', 'contract_experience',
             'contract_employment',
         ]
