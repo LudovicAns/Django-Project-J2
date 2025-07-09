@@ -1,7 +1,13 @@
 from django.contrib import admin
-from .models import JobRecord, Contract, Skill, Industry, Candidate
+from .models import JobRecord, Contract, Skill, Industry, Candidate, Category
+
 
 # Register your models here.
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
 
 @admin.register(Contract)
 class ContractAdmin(admin.ModelAdmin):
