@@ -33,25 +33,31 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = ['id', 'country_code',]
 
 class CandidateSerializer(serializers.ModelSerializer):
+    location = LocationSerializer(read_only=True)
     class Meta:
         model = Candidate
         fields = ['id', 'name', 'email', 'location',]
 
 class JobRecordSerializer(serializers.ModelSerializer):
+    # Sérialiseurs imbriqués pour les opérations de lecture
     contract_experience = ContractSerializer(read_only=True, source='experience_level')
     contract_employment = ContractSerializer(read_only=True, source='employment_type')
-    industry = IndustrySerializer(read_only=True)
-    candidate = CandidateSerializer(read_only=True)
-    skills = SkillSerializer(many=True)
+    job_title_detail = JobTitleSerializer(read_only=True, source='job_title')
+    employee_residence_detail = LocationSerializer(read_only=True, source='employee_residence')
+    company_location_detail = LocationSerializer(read_only=True, source='company_location')
+    industry_detail = IndustrySerializer(read_only=True, source='industry')
+    candidate_detail = CandidateSerializer(read_only=True, source='candidate')
+    skills_detail = SkillSerializer(read_only=True, many=True, source='skills')
 
     class Meta:
         model = JobRecord
         fields= [
-            'id', 'job_title', 'work_year',
-            'company_location', 'company_size',
+            'id', 'job_title', 'job_title_detail', 'work_year',
+            'employee_residence', 'employee_residence_detail',
+            'company_location', 'company_location_detail', 'company_size',
             'salary', 'salary_currency', 'salary_in_usd',
             'remote_ratio', 'experience_level',
-            'employment_type', 'industry', 'candidate',
-            'skills', 'contract_experience',
+            'employment_type', 'industry', 'industry_detail', 'candidate', 'candidate_detail',
+            'skills', 'skills_detail', 'contract_experience',
             'contract_employment',
         ]
