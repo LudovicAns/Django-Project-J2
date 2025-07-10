@@ -10,4 +10,6 @@ urlpatterns = [
     path('add/', views.add_feedback, name='add_feedback'),
     path('job/<int:job_id>/average/', views.job_average_rating, name='job_average_rating'),
     path('job_title/<int:job_title_id>/average/', views.job_title_average_rating, name='job_title_average_rating'),
+    path('get_jobs_by_title/', views.get_jobs_by_title, name='get_jobs_by_title'),
+    path('all/', views.all_feedbacks, name='all_feedbacks'),
 ]

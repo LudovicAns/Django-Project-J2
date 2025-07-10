@@ -25,7 +25,9 @@
     </div>
 
     <div class="flex justify-center space-x-4 mt-8">
-        <a href="{% url 'job_title_feedbacks' job_title.id %}" class="text-green-600 hover:text-green-800 font-medium">View All Feedbacks</a>
+        <a href="{% url 'job_title_feedbacks' job_title.id %}" class="text-green-600 hover:text-green-800 font-medium">View Job Feedbacks</a>
+        <span class="text-gray-500">|</span>
+        <a href="{% url 'all_feedbacks' %}" class="text-green-600 hover:text-green-800 font-medium">View All Feedbacks</a>
         <span class="text-gray-500">|</span>
         <a href="{% url 'add_feedback' %}" class="text-green-600 hover:text-green-800 font-medium">Add a Feedback</a>
         <span class="text-gray-500">|</span>

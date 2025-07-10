@@ -23,6 +23,48 @@
                 min-height: 100px;
             }
         </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const jobTitleSelect = document.getElementById('job_title_select');
+                const jobSelect = document.getElementById('id_job');
+
+                jobTitleSelect.addEventListener('change', function() {
+                    const jobTitleId = this.value;
+
+                    if (jobTitleId) {
+                        // Enable the job select
+                        jobSelect.disabled = false;
+
+                        // Clear current options
+                        jobSelect.innerHTML = '<option value="">Loading jobs...</option>';
+
+                        // Fetch jobs for the selected job title
+                        fetch(`/feedbacks/get_jobs_by_title/?job_title_id=${jobTitleId}`)
+                            .then(response => response.json())
+                            .then(jobs => {
+                                // Clear loading option
+                                jobSelect.innerHTML = '<option value="">Select a Job</option>';
+
+                                // Add options for each job
+                                jobs.forEach(job => {
+                                    const option = document.createElement('option');
+                                    option.value = job.id;
+                                    option.textContent = `${job.work_year} - ${job.company_location__country_code} - $${job.salary_in_usd}`;
+                                    jobSelect.appendChild(option);
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error fetching jobs:', error);
+                                jobSelect.innerHTML = '<option value="">Error loading jobs</option>';
+                            });
+                    } else {
+                        // Disable the job select if no job title is selected
+                        jobSelect.disabled = true;
+                        jobSelect.innerHTML = '<option value="">Select a Job Title first</option>';
+                    }
+                });
+            });
+        </script>
         <form method="post">
             {% csrf_token %}
 
@@ -33,9 +75,23 @@
             {% endif %}
 
             <div class="mb-4">
+                <label for="job_title_select" class="block text-gray-700 text-sm font-bold mb-2">Job Title:</label>
+                <div class="relative">
+                    <select id="job_title_select" name="job_title" class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+                        <option value="">Select a Job Title</option>
+                        {% for job_title in job_titles %}
+                            <option value="{{ job_title.id }}">{{ job_title.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-4">
                 <label for="{{ form.job.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Job:</label>
                 <div class="relative">
-                    {{ form.job|safe }}
+                    <select id="id_job" name="job" class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50" disabled>
+                        <option value="">Select a Job Title first</option>
+                    </select>
                 </div>
                 {% if form.job.errors %}
                     <ul class="text-red-500 text-sm mt-1">

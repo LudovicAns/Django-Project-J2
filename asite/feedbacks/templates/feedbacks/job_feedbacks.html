@@ -12,7 +12,7 @@
         <h1 class="text-3xl font-bold mb-6 text-center">Feedbacks for {{ job }}</h1>
 
         <div class="bg-gray-200 p-4 rounded-lg mb-6">
-            <h3 class="text-lg font-semibold mb-2">Filter Feedbacks</h3>
+            <h3 class="text-lg font-semibold mb-2">Filter & Sort Feedbacks</h3>
             <form method="get" class="flex flex-wrap items-end gap-2">
                 <div class="w-full md:w-auto">
                     <label for="min_rating" class="block text-sm font-medium text-gray-700 mb-1">Minimum Rating:</label>
@@ -25,7 +25,20 @@
                         <option value="5">5</option>
                     </select>
                 </div>
-                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Filter</button>
+                <div class="w-full md:w-auto">
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search Comments:</label>
+                    <input type="text" name="search" id="search" value="{{ search_query }}" placeholder="Search in comments..." class="w-full md:w-auto rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+                </div>
+                <div class="w-full md:w-auto">
+                    <label for="sort" class="block text-sm font-medium text-gray-700 mb-1">Sort By:</label>
+                    <select name="sort" id="sort" class="w-full md:w-auto rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+                        <option value="-created_at">Newest First</option>
+                        <option value="created_at">Oldest First</option>
+                        <option value="-rating">Highest Rating</option>
+                        <option value="rating">Lowest Rating</option>
+                    </select>
+                </div>
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Apply</button>
             </form>
         </div>
 
@@ -48,6 +61,8 @@
             <a href="{% url 'add_feedback' %}" class="text-green-600 hover:text-green-800 font-medium">Add a Feedback</a> 
             <span class="text-gray-500 mx-2">|</span> 
             <a href="{% url 'job_average_rating' job.id %}" class="text-green-600 hover:text-green-800 font-medium">View Average Rating</a>
+            <span class="text-gray-500 mx-2">|</span> 
+            <a href="{% url 'all_feedbacks' %}" class="text-green-600 hover:text-green-800 font-medium">View All Feedbacks</a>
         </div>
     </div>
 </body>

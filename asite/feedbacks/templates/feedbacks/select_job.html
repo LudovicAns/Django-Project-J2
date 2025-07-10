@@ -21,9 +21,12 @@
         <p class="text-gray-600 italic">No job titles available.</p>
     {% endif %}
 
-    <div class="mt-8">
+    <div class="mt-8 flex space-x-4">
         <a href="{% url 'add_feedback' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
             Add a Feedback
+        </a>
+        <a href="{% url 'all_feedbacks' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+            View All Feedbacks
         </a>
     </div>
 {% endblock %}
