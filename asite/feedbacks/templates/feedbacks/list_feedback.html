@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Feedbacks for {{ job }}{% endblock %}
+{% block title %}Feedbacks for {{ job_title.name }}{% endblock %}
 
 {% block content %}
-    <h1 class="text-2xl font-bold mb-6">Feedbacks for {{ job }}</h1>
+    <h1 class="text-2xl font-bold mb-6">Feedbacks for {{ job_title.name }}</h1>
+    <p class="text-gray-600 mb-4">Showing feedbacks for {{ jobs.count }} job{{ jobs.count|pluralize }} with this title</p>
 
     <div class="bg-gray-100 p-4 rounded-lg mb-6">
         <h3 class="text-lg font-semibold mb-2">Filter Feedbacks</h3>
@@ -43,19 +44,20 @@
             {% for feedback in feedbacks %}
                 <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
                     <p class="font-bold text-lg">Rating: {{ feedback.rating }}/5</p>
-                    <p class="text-gray-700">By: {{ feedback.author_name }}</p>
+                    <p class="text-gray-700">By: {{ feedback.author }}</p>
+                    <p class="text-gray-700">For job: {{ feedback.job }}</p>
                     <p class="my-2">{{ feedback.comment }}</p>
                     <p class="text-sm text-gray-500">Posted on: {{ feedback.created_at }}</p>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-gray-600 italic">No feedbacks found for this job{% if min_rating %} with rating {{ min_rating }}+{% endif %}.</p>
+        <p class="text-gray-600 italic">No feedbacks found for this job title{% if min_rating %} with rating {{ min_rating }}+{% endif %}.</p>
     {% endif %}
 
     <div class="mt-6 flex space-x-4">
         <a href="{% url 'add_feedback' %}" class="text-green-600 hover:text-green-800 font-medium">Add a Feedback</a>
         <span class="text-gray-500">|</span>
-        <a href="{% url 'select_job' %}" class="text-green-600 hover:text-green-800 font-medium">Back to Job List</a>
+        <a href="{% url 'select_job' %}" class="text-green-600 hover:text-green-800 font-medium">Back to Job Titles</a>
     </div>
 {% endblock %}
