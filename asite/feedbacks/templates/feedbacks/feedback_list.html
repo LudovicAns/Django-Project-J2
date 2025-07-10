@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}All Feedbacks{% endblock %}
+
+{% block content %}
+    <h1 class="text-2xl font-bold mb-6">All Feedbacks</h1>
+
+    <div class="mb-4">
+        <a href="{% url 'feedback_create' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Add New Feedback</a>
+    </div>
+
+    <div class="bg-gray-100 p-4 rounded-lg mb-6">
+        <h3 class="text-lg font-semibold mb-2">Search & Sort Feedbacks</h3>
+        <form method="get" class="flex flex-wrap items-end gap-2">
+            <div class="w-full md:w-auto">
+                <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search Comments:</label>
+                <input type="text" name="search" id="search" value="{{ search_query }}" placeholder="Search in comments..." class="w-full md:w-auto rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+            </div>
+            <div class="w-full md:w-auto">
+                <label for="sort" class="block text-sm font-medium text-gray-700 mb-1">Sort By:</label>
+                <select name="sort" id="sort" class="w-full md:w-auto rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+                    <option value="-created_at">Newest First</option>
+                    <option value="created_at">Oldest First</option>
+                    <option value="-rating">Highest Rating</option>
+                    <option value="rating">Lowest Rating</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Apply</button>
+        </form>
+    </div>
+
+    {% if feedbacks %}
+        <div class="space-y-4">
+            {% for feedback in feedbacks %}
+                <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-bold text-lg">Rating: {{ feedback.rating }}/5</p>
+                            <p class="text-gray-700">By: {{ feedback.author }}</p>
+                            <p class="text-gray-700">For job: {{ feedback.job }}</p>
+                            <p class="my-2">{{ feedback.comment }}</p>
+                            <p class="text-sm text-gray-500">Posted on: {{ feedback.created_at }}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a href="{% url 'feedback_detail' feedback.pk %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm">View</a>
+                            <a href="{% url 'feedback_update' feedback.pk %}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded text-sm">Edit</a>
+                            <a href="{% url 'feedback_delete' feedback.pk %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination controls -->
+        {% if feedbacks.has_other_pages %}
+            <div class="mt-6 flex justify-center space-x-2">
+                {% if feedbacks.has_previous %}
+                    <a href="?page={{ feedbacks.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                        Previous
+                    </a>
+                {% else %}
+                    <span class="bg-gray-200 text-gray-500 font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
+                        Previous
+                    </span>
+                {% endif %}
+
+                <span class="py-2 px-4">Page {{ feedbacks.number }} of {{ feedbacks.paginator.num_pages }}</span>
+
+                {% if feedbacks.has_next %}
+                    <a href="?page={{ feedbacks.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                        Next
+                    </a>
+                {% else %}
+                    <span class="bg-gray-200 text-gray-500 font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
+                        Next
+                    </span>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        <p class="text-gray-600 italic">No feedbacks found{% if search_query %} matching "{{ search_query }}"{% endif %}.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.id %}Edit Job{% else %}Create New Job{% endif %}{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">{% if form.instance.id %}Edit Job{% else %}Create New Job{% endif %}</h1>
+            <a href="{% url 'job_list' %}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Back to List</a>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            <style>
+                input[type="text"], input[type="number"], select, textarea {
+                    width: 100%;
+                    padding: 0.5rem 0.75rem;
+                    border: 1px solid #d1d5db;
+                    border-radius: 0.375rem;
+                    background-color: #f9fafb;
+                    color: #333;
+                }
+                input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+                    outline: none;
+                    border-color: #10b981;
+                    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+                }
+                textarea {
+                    min-height: 100px;
+                }
+            </style>
+            <form method="post">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4">Basic Information</h2>
+
+                        <div class="mb-4">
+                            <label for="{{ form.work_year.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Work Year</label>
+                            {{ form.work_year }}
+                            {% if form.work_year.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.work_year.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.job_title.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Job Title</label>
+                            {{ form.job_title }}
+                            {% if form.job_title.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.job_title.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.experience_level.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Experience Level</label>
+                            {{ form.experience_level }}
+                            {% if form.experience_level.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.experience_level.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.employment_type.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Employment Type</label>
+                            {{ form.employment_type }}
+                            {% if form.employment_type.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.employment_type.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <h2 class="text-xl font-semibold mb-4 mt-6">Salary Information</h2>
+
+                        <div class="mb-4">
+                            <label for="{{ form.salary.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Salary</label>
+                            {{ form.salary }}
+                            {% if form.salary.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.salary.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.salary_currency.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Salary Currency</label>
+                            {{ form.salary_currency }}
+                            {% if form.salary_currency.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.salary_currency.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.salary_in_usd.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Salary in USD</label>
+                            {{ form.salary_in_usd }}
+                            {% if form.salary_in_usd.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.salary_in_usd.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4">Location Information</h2>
+
+                        <div class="mb-4">
+                            <label for="{{ form.employee_residence.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Employee Residence</label>
+                            {{ form.employee_residence }}
+                            {% if form.employee_residence.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.employee_residence.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.company_location.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Company Location</label>
+                            {{ form.company_location }}
+                            {% if form.company_location.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.company_location.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.remote_ratio.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Remote Ratio (%)</label>
+                            {{ form.remote_ratio }}
+                            {% if form.remote_ratio.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.remote_ratio.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <h2 class="text-xl font-semibold mb-4 mt-6">Additional Information</h2>
+
+                        <div class="mb-4">
+                            <label for="{{ form.company_size.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Company Size</label>
+                            {{ form.company_size }}
+                            {% if form.company_size.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.company_size.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.industry.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Industry</label>
+                            {{ form.industry }}
+                            {% if form.industry.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.industry.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.skills.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Skills</label>
+                            {{ form.skills }}
+                            {% if form.skills.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.skills.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.candidate.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Candidate</label>
+                            {{ form.candidate }}
+                            {% if form.candidate.errors %}
+                                <ul class="text-red-500 text-sm mt-1">
+                                    {% for error in form.candidate.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-6">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                        {% if form.instance.id %}Update Job{% else %}Create Job{% endif %}
+                    </button>
+                    <a href="{% url 'job_list' %}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

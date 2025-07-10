@@ -3,13 +3,23 @@ from rest_framework.routers import DefaultRouter
 
 from . import views
 
+# API router for Feedbacks
+feedbacks_router = DefaultRouter()
+feedbacks_router.register('feedbacks', views.FeedbackViewSet)
+
+# URL patterns
 urlpatterns = [
-    path('', views.select_job, name='select_job'),
-    path('job/<int:job_id>/', views.job_feedbacks, name='job_feedbacks'),
-    path('job_title/<int:job_title_id>/', views.job_title_feedbacks, name='job_title_feedbacks'),
-    path('add/', views.add_feedback, name='add_feedback'),
-    path('job/<int:job_id>/average/', views.job_average_rating, name='job_average_rating'),
-    path('job_title/<int:job_title_id>/average/', views.job_title_average_rating, name='job_title_average_rating'),
-    path('get_jobs_by_title/', views.get_jobs_by_title, name='get_jobs_by_title'),
-    path('all/', views.all_feedbacks, name='all_feedbacks'),
+    # API endpoints
+    path('feedbacks/', include(feedbacks_router.urls)),
+
+    # Template routes for Feedback CRUD operations
+    path('', views.feedback_list, name='feedback_list'),
+    path('<int:pk>/', views.feedback_detail, name='feedback_detail'),
+    path('create/', views.feedback_create, name='feedback_create'),
+    path('<int:pk>/update/', views.feedback_update, name='feedback_update'),
+    path('<int:pk>/delete/', views.feedback_delete, name='feedback_delete'),
+
+    # API template routes
+    path('api/', views.feedback_list_api, name='feedback_list_api'),
+    path('api/<int:pk>/', views.feedback_detail_api, name='feedback_detail_api'),
 ]

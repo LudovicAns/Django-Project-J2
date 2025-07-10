@@ -1,12 +1,17 @@
 from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import JobRecord, Category, Contract, Skill, Industry, JobTitle, Location, Candidate
 from .serializer import JobRecordSerializer, CategorySerializer, ContractSerializer, SkillSerializer, \
     IndustrySerializer, JobTitleSerializer, LocationSerializer, CandidateSerializer
+from .forms import JobForm
 
 
-# Create your views here.
+# API ViewSets
 class CategoryViewSet(viewsets.ModelViewSet):
     #permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Category.objects.all()
@@ -50,3 +55,92 @@ class JobRecordViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['job_title__name', 'employee_residence__country_code']
     ordering_fields = ['salary_in_usd', 'created_at']
+
+
+# Template Views for JobRecord CRUD operations
+def job_list(request):
+    """View function for listing all jobs."""
+    # Get search and sort parameters from request
+    search_query = request.GET.get('search', '')
+    sort_by = request.GET.get('sort', '-salary_in_usd')  # Default sort by salary (high to low)
+    page = request.GET.get('page', 1)  # Get the page parameter, default to 1
+
+    # Start with all jobs
+    jobs = JobRecord.objects.all()
+
+    # Apply search filter if provided
+    if search_query:
+        jobs = jobs.filter(job_title__name__icontains=search_query)
+
+    # Apply sorting
+    jobs = jobs.order_by(sort_by)
+
+    # Apply pagination
+    paginator = Paginator(jobs, 10)  # Show 10 jobs per page
+    try:
+        jobs_page = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        jobs_page = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range, deliver last page of results
+        jobs_page = paginator.page(paginator.num_pages)
+
+    context = {
+        'jobs': jobs_page,
+        'search_query': search_query,
+        'sort_by': sort_by,
+    }
+
+    return render(request, 'jobs/job_list.html', context)
+
+def job_list_api(request):
+    """View function for listing all jobs using API."""
+    return render(request, 'jobs/job_list_api.html')
+
+def job_detail(request, pk):
+    """View function for displaying details of a specific job."""
+    job = get_object_or_404(JobRecord, pk=pk)
+    return render(request, 'jobs/job_detail.html', {'job': job})
+
+def job_detail_api(request, pk):
+    """View function for displaying details of a specific job using API."""
+    return render(request, 'jobs/job_detail_api.html')
+
+def job_create(request):
+    """View function for creating a new job."""
+    if request.method == 'POST':
+        form = JobForm(request.POST)
+        if form.is_valid():
+            job = form.save()
+            return redirect('job_detail', pk=job.pk)
+    else:
+        form = JobForm()
+
+    return render(request, 'jobs/job_form.html', {'form': form})
+
+def job_update(request, pk):
+    """View function for updating an existing job."""
+    job = get_object_or_404(JobRecord, pk=pk)
+    if request.method == 'POST':
+        form = JobForm(request.POST, instance=job)
+        if form.is_valid():
+            job = form.save()
+            return redirect('job_detail', pk=job.pk)
+    else:
+        form = JobForm(instance=job)
+
+    return render(request, 'jobs/job_form.html', {'form': form})
+
+def job_delete(request, pk):
+    """View function for deleting an existing job."""
+    job = get_object_or_404(JobRecord, pk=pk)
+    if request.method == 'POST':
+        # Handle form submission
+        # Delete the job
+        job.delete()
+        # Redirect to the job list page
+        return redirect('job_list')
+    else:
+        # Display the confirmation page
+        return render(request, 'jobs/job_confirm_delete.html', {'object': job})

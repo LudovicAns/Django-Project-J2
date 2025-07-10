@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Feedback Details (API){% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Feedback Details (API)</h1>
+            <div class="flex space-x-2">
+                <a href="{% url 'feedback_list' %}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Back to List</a>
+                <span id="edit-button"></span>
+                <span id="delete-button"></span>
+            </div>
+        </div>
+
+        <div id="feedback-container" class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            <p class="text-gray-600 italic">Loading feedback details...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get feedback ID from URL
+            const pathParts = window.location.pathname.split('/');
+            const feedbackId = pathParts[pathParts.length - 2]; // Assuming URL format is /feedbacks/{id}/
+            
+            // Load feedback details
+            loadFeedbackDetails(feedbackId);
+        });
+        
+        function loadFeedbackDetails(feedbackId) {
+            const feedbackContainer = document.getElementById('feedback-container');
+            const editButton = document.getElementById('edit-button');
+            const deleteButton = document.getElementById('delete-button');
+            
+            // Fetch feedback details from API
+            fetch(`/api/feedbacks/feedbacks/${feedbackId}/`, {
+                headers: {
+                    'Authorization': 'Token 13e083ef391c83da5dc1ede480bfc457b306e445'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(feedback => {
+                // Update edit and delete buttons
+                editButton.innerHTML = `<a href="/feedbacks/${feedback.id}/update/" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Edit</a>`;
+                deleteButton.innerHTML = `<a href="/feedbacks/${feedback.id}/delete/" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">Delete</a>`;
+                
+                // Fetch job details
+                return fetch(`/api/jobs/jobs/${feedback.job}/`, {
+                    headers: {
+                        'Authorization': 'Token 13e083ef391c83da5dc1ede480bfc457b306e445'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return { job_title_detail: { name: 'Unknown Job' } };
+                    }
+                    return response.json();
+                })
+                .then(job => {
+                    // Fetch author details
+                    return fetch(`/api/candidate/${feedback.author}/`, {
+                        headers: {
+                            'Authorization': 'Token 13e083ef391c83da5dc1ede480bfc457b306e445'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return { name: 'Unknown Author' };
+                        }
+                        return response.json();
+                    })
+                    .then(author => {
+                        // Display feedback details with job and author information
+                        feedbackContainer.innerHTML = `
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h2 class="text-xl font-semibold mb-4">Feedback Information</h2>
+                                    <p class="mb-2"><span class="font-medium">Rating:</span> <span class="text-lg font-bold">${feedback.rating}/5</span></p>
+                                    <p class="mb-2"><span class="font-medium">Author:</span> ${author.name}</p>
+                                    <p class="mb-2"><span class="font-medium">Date:</span> ${new Date(feedback.created_at).toLocaleString()}</p>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl font-semibold mb-4">Job Information</h2>
+                                    <p class="mb-2"><span class="font-medium">Job Title:</span> ${job.job_title_detail ? job.job_title_detail.name : 'Unknown'}</p>
+                                    <p class="mb-2"><span class="font-medium">Company Location:</span> ${job.company_location_detail ? job.company_location_detail.country_code : 'Unknown'}</p>
+                                    <p class="mb-2"><span class="font-medium">Salary:</span> $${parseFloat(job.salary_in_usd).toFixed(2)}</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-6">
+                                <h2 class="text-xl font-semibold mb-2">Comment</h2>
+                                <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                                    <p>${feedback.comment}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching feedback details:', error);
+                feedbackContainer.innerHTML = '<p class="text-red-600">Error loading feedback details. Please try again later.</p>';
+            });
+        }
+    </script>
+{% endblock %}
