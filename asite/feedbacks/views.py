@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Avg
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .models import Feedbacks
 from .forms import FeedbackForm
@@ -10,6 +11,7 @@ from jobs.models import JobRecord
 
 # Create your views here.
 class FeedbackViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Feedbacks.objects.all()
     serializer_class = FeedbackSerializer
 
