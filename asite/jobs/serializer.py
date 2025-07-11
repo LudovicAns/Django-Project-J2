@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from .models import Category, Contract, Skill, Industry, JobTitle, Location, Candidate, JobRecord
 
+class DashboardSerializer(serializers.Serializer):
+    job_title = serializers.CharField()
+    avg_rating = serializers.FloatField()
+    feedback_count = serializers.IntegerField()
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

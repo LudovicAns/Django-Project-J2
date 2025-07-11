@@ -1,5 +1,8 @@
 from rest_framework import viewsets, filters
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
+from django.db.models import Avg, Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -7,48 +10,48 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import JobRecord, Category, Contract, Skill, Industry, JobTitle, Location, Candidate
 from .serializer import JobRecordSerializer, CategorySerializer, ContractSerializer, SkillSerializer, \
-    IndustrySerializer, JobTitleSerializer, LocationSerializer, CandidateSerializer
+    IndustrySerializer, JobTitleSerializer, LocationSerializer, CandidateSerializer, DashboardSerializer
 from .forms import JobForm
 
 
 # API ViewSets
 class CategoryViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 class ContractViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
 
 class SkillViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
 
 class IndustryViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Industry.objects.all()
     serializer_class = IndustrySerializer
 
 class JobTitleViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = JobTitle.objects.all()
     serializer_class = JobTitleSerializer
 
 class LocationViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
 
 class CandidateViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Candidate.objects.all()
     serializer_class = CandidateSerializer
 
 class JobRecordViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = JobRecord.objects.all()
     serializer_class = JobRecordSerializer
 
@@ -144,3 +147,28 @@ def job_delete(request, pk):
     else:
         # Display the confirmation page
         return render(request, 'jobs/job_confirm_delete.html', {'object': job})
+
+@api_view(['GET'])
+def dashboard_api(request):
+    """API endpoint for dashboard data with job statistics."""
+    # Group by job_title__name and calculate aggregated statistics for each group
+    job_stats = JobRecord.objects.values('job_title__name').annotate(
+        avg_rating=Avg('feedbacks__rating'),
+        feedback_count=Count('feedbacks')
+    )
+
+    # Prepare data for serialization
+    data = []
+    for stat in job_stats:
+        data.append({
+            'job_title': stat['job_title__name'],
+            'avg_rating': stat['avg_rating'] if stat['avg_rating'] is not None else 0,
+            'feedback_count': stat['feedback_count']
+        })
+
+    serializer = DashboardSerializer(data, many=True)
+    return Response(serializer.data)
+
+def dashboard(request):
+    """View function for displaying the dashboard page."""
+    return render(request, 'jobs/dashboard.html')

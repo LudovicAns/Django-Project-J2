@@ -11,7 +11,7 @@ from jobs.models import JobRecord, JobTitle
 
 # API ViewSet
 class FeedbackViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Feedbacks.objects.all()
     serializer_class = FeedbackSerializer
 

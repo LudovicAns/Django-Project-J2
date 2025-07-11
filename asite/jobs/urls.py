@@ -30,6 +30,9 @@ urlpatterns = [
     # API template routes
     path('api/', views.job_list_api, name='job_list_api'),
     path('api/<int:pk>/', views.job_detail_api, name='job_detail_api'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('api/dashboard/', views.dashboard_api, name='dashboard_api'),
+    path('jobs/dashboard/', views.dashboard_api, name='jobs_dashboard_api'),
 
     # API endpoints
     path('jobs/', include(jobs_router.urls)),
