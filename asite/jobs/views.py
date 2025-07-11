@@ -155,7 +155,7 @@ def dashboard_api(request):
     job_stats = JobRecord.objects.values('job_title__name').annotate(
         avg_rating=Avg('feedbacks__rating'),
         feedback_count=Count('feedbacks')
-    )
+    ).filter(feedback_count__gt=0)
 
     # Prepare data for serialization
     data = []
